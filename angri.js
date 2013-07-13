@@ -31,7 +31,7 @@
   Templates = {
     header:   '<thead>' +
                 '<th ng-repeat="head in angri.header">' +
-                  '<a class="btn span3" ng-class="{disabled: !head.name}"  ng-click="sort(head.index)">' +
+                  '<a ng-class="{disabled: !head.name}"  ng-click="sort(head.index)">' +
                     '<i ng-class="{ \'icon-arrow-up\'  : !!head.name && (angri.predicate==head.name) && angri.reverse' +
                                   ',\'icon-arrow-down\': head.name && (angri.predicate==head.name) && !angri.reverse}" ></i>' +
                     '{{head.title}} ' +
@@ -39,15 +39,25 @@
                 '</th>' +
               '</thead>',
     controls: '<div class="row">' +
-                '<div class="span4">' +
-                  '<select ng-options="option for option in angri.limits" ng-model="angri.limit"></select>' +
+                '<div class="span7">' +
+                  '<select ng-options="option for option in angri.limits" ng-model="angri.limit" class="input-small"></select>' +
                 '</div>' +
-                '<div class="control-group span8" ng-class="{error: angri.filterError}">' +
-                  '<input type="text" style="float:right;" class="input-medium" ng-model="angri.filter" placeholder="{{i18n.filter}}" name="filter" />' +
+                '<div class="control-group" ng-class="{error: angri.filterError}">' +
+                  '<label for="filter">Search</label> <input type="text" style="float:right;" class="input-medium" ng-model="angri.filter" placeholder="{{i18n.filter}}" name="filter" />' +
                 '</div>' +
               '</div>',
     footer:   '<div style="float: left;" class="pageNum">' +
-                '<strong>{{i18n.total}}{{angri.filteredList(true).length}} [{{angri.unfilteredList(true).length}}]</strong>' +
+    
+    
+    //
+    // pagination
+    //
+    //Showing _START_ to _END_ of _TOTAL_ entries
+    //
+    //
+    
+                '<strong>{{i18n.showing}} {{angri.filteredList(true).length}} {{i18n.to}} {{angri.unfilteredList(true).length}} {{i18n.of}} {{angri.filtered}}</strong>' +
+                
               '</div>' +
               '<div class="pagination pagination-right">' +
                 '<ul>' +
@@ -62,7 +72,7 @@
                   '</li>' +
                 '</ul>' +
               '</div>',
-    debug:    '<pre>pagination = {{angri | json}}</pre>'
+ //   debug:    '<pre>pagination = {{angri | json}}</pre>'
   };
 
   // the skip filter
@@ -257,8 +267,11 @@
             scope.i18n = {
               next: 'Next',
               prev: 'Prev',
-              total: 'Total: ',
-              filter: 'Field:Item or Item'
+              showing: 'Showing ',
+              to: 'to',
+              of: 'of',
+              entries: 'entries',
+              filter: 'Filter'
             };
 
             if(scope.angri.debug) {
